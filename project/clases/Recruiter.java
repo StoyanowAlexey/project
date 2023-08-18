@@ -12,3 +12,4 @@ public class Recruiter extends Worker{
         this.salary = salary;
     }
 }
+//

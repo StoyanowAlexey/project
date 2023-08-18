@@ -10,3 +10,4 @@ public class HR extends Worker {
         this.salary = salary;
     }
 }
+//

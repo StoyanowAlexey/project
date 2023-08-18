@@ -5,4 +5,4 @@ public abstract class Worker {
     public int age;
     public double salary;
     public double experience;
-}
+}//

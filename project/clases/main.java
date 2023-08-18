@@ -3,7 +3,7 @@ package project.clases;
 import java.io.ObjectOutput;
 import java.util.Scanner;
 import java.util.Formatter;
-
+//
 
 public class main {
     public static void main(String [] args){
@@ -78,7 +78,7 @@ public class main {
                     }
             }
         }
-       // System.out.println("f = " + f);
+        // System.out.println("f = " + f);
         //if(kolvo == 0) f = 10;
         if(f == 0)  System.out.println("\n Takih rabotnikov seychas net :( \n");
     }
