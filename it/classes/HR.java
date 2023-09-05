@@ -1,6 +1,6 @@
-package project.clases;
+package it.classes;
 
-import project.enums.TypeWork;
+import it.enums.TypeWork;
 
 public class HR extends Worker {
     public String HR_English_level;

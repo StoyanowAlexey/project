@@ -1,6 +1,6 @@
-package project.clases;
+package it.classes;
 
-import project.enums.TypeWork;
+import it.enums.TypeWork;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

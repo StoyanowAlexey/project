@@ -1,4 +1,4 @@
-package project.enums;
+package it.enums;
 
 public enum EnglishLevel {
     A1,
