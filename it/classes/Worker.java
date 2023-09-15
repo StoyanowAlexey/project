@@ -1,6 +1,6 @@
-package project.clases;
+package it.classes;
 
-import project.enums.TypeWork;
+import it.enums.TypeWork;
 
 public abstract class Worker {
     public String name;

@@ -1,10 +1,8 @@
-package project.clases;
+package it.classes;
 
-import project.enums.TypeWork;
+import it.enums.TypeWork;
 
-import java.io.ObjectOutput;
 import java.util.Scanner;
-import java.util.Formatter;
 //
 
 public class main {
