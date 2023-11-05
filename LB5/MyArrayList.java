@@ -30,11 +30,11 @@ public class MyArrayList {
     }
 
     public String toString(){
-        String array_elements = "";
+        String arrayElements = "";
         for(int i = 0; i < size; i++){
-            array_elements = array_elements + ar[i] + " ";
+            arrayElements = arrayElements + ar[i] + " ";
         }
-        return array_elements;
+        return arrayElements;
     }
 
     public MyListIterator iterator (){
@@ -87,11 +87,11 @@ public class MyArrayList {
         @Override
         public void remove() {
              if(func != 0 && cursor != 0){
-                Integer [] clone_array = ar.clone();
+                Integer [] cloneArray = ar.clone();
                 ar[size - 1] = null;
                 size--;
                 for(int i = 0; i < size; i++){
-                    if(i == cursor - 1) ar[i] = clone_array[i + 1];
+                    if(i == cursor - 1) ar[i] = cloneArray[i + 1];
                 }
              }
         }
@@ -115,10 +115,10 @@ public class MyArrayList {
         public void add(Integer n) {
             if (size < ar.length) {
                 size++;
-                Integer [] clone_array = ar.clone();
+                Integer [] cloneArray = ar.clone();
                 ar[cursor] = n;
                 for(int i = 0; i < size; i++){
-                    if(i > cursor) ar[i] = clone_array[i - 1];
+                    if(i > cursor) ar[i] = cloneArray[i - 1];
                 }
                 cursor++;
             }
