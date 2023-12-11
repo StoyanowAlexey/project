@@ -1,33 +1,42 @@
 package EmailEnteringProject;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
-
+// 1) скрытый текст
 public class Main {
-    public static void main(String [] args) throws MyWrongEmailException, MyWrongLengthException {
+    public static void main(String [] args) throws MyWrongEmailException, MyWrongLengthException, IOException {
         Scanner in = new Scanner(System.in);
-        List<Person> personList = new ArrayList<>();
-        personList.add(new Person("Alex",15,"Programer","0682841303"));
-        personList.add(new Person("Michael",20,"Backend","0682841304"));
-        List<String> emailList = new ArrayList<>();
-        emailList.add("bestg202@gmail.com");
-        emailList.add("mishastoyanow@gmail.com");
-        List<String> passwordList = new ArrayList<>();
-        passwordList.add("buriruri");
-        passwordList.add("rapunchel1234");
-
+        MyFileReader emailReader = new MyFileReader(new File("EmailEnteringProject/emailBase"));
+        MyFileReader passwordReader = new MyFileReader(new File("EmailEnteringProject/passwordsBase"));
+        MyFileReader personInformationReader = new MyFileReader(new File("EmailEnteringProject/personalInformationBase"));
+        List<Person> personList = personInformationReader.readFromFilePersonType();
+        List<String> emailList = emailReader.readFromFileOneLineToList();
+        List<String> passwordList = passwordReader.readFromFileOneLineToList();
         while (true){
-            System.out.println("Enter the number \n" + "1) Creating new profile \n" + "2) Checked personal information \n" + "3) Delete profile \n" + "0) Exit");
+            System.out.println("""
+                    Enter the number\s
+                    1) Creating new profile\s
+                    2) Checked personal information\s
+                    3) Delete profile\s
+                    0) Exit""");
             int number = in.nextInt();
             if(number == 0) break;
             numberMenu(number,emailList,passwordList,personList);
         }
+        MyFileWriter myFileWriter = new MyFileWriter();
+        myFileWriter.clearTheFile(new File("EmailEnteringProject/emailBase"));
+        myFileWriter.clearTheFile(new File("EmailEnteringProject/passwordsBase"));
+        myFileWriter.clearTheFile(new File("EmailEnteringProject/personalInformationBase"));
+        myFileWriter.writeToFileByOneLine(emailList,new File("EmailEnteringProject/emailBase"));
+        myFileWriter.writeToFileByOneLine(passwordList,new File("EmailEnteringProject/passwordsBase"));
+        myFileWriter.writeToFileByPersonType(personList,new File("EmailEnteringProject/personalInformationBase"));
     }
 
     public static void numberMenu(int number, List<String> emailList, List<String> passwordList, List<Person> personList) throws MyWrongEmailException, MyWrongLengthException {
-        Scanner in = new Scanner(System.in);
         switch (number){
             case 1 -> {
                 String email = enteringEmail(emailList);
@@ -51,19 +60,20 @@ public class Main {
     }
 
     public static int enterTheProfile(List <String> emailList, List<String> passwordList){
-        int personEmailId = 0,f = 0;
+        int personEmailId = 0;
+        boolean f;
         Scanner in = new Scanner(System.in);
         while (true){
-            f = 0;
+            f = true;
             System.out.println("Enter your email ");
             String email = in.nextLine();
             System.out.println("Enter password ");
             String password = in.nextLine();
             if (emailList.contains(email)){
-                f = 1;
+                f = false;
                 personEmailId = emailList.indexOf(email);
             }
-            if (f == 1 && Objects.equals(passwordList.get(personEmailId), password)) break;
+            if (!f && Objects.equals(passwordList.get(personEmailId), password)) break;
             System.out.println("Error : False email or password, please write correct information");
         }
         return personEmailId;
@@ -120,11 +130,11 @@ public class Main {
         System.out.println("Enter your name");
         String name = in.nextLine();
         System.out.println("Enter your age ");
-        int age = in.nextInt();
-        System.out.println("Enter your work");
-        String work = in.nextLine();
+        int age = Integer.parseInt(in.nextLine());
         System.out.println("Enter your phone number ");
         String phoneNumber = in.nextLine();
+        System.out.println("Enter your work");
+        String work = in.nextLine();
 
         return new Person(name,age,work,phoneNumber);
     }
@@ -132,6 +142,6 @@ public class Main {
 
 
     public static boolean isEmail(String email){
-        return email.contains("@gmail.com") || email.contains("@email.com");
+        return email.endsWith("@gmail.com") || email.endsWith("@email.com");
     }
 }

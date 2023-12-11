@@ -13,19 +13,19 @@ public class Person {
         this.phone = phone;
     }
 
-    private String getPhone(){
+    public String getPhone(){
         return phone;
     }
 
-    private String getName(){
+    public String getName(){
         return name;
     }
 
-    private String getWork(){
+    public String getWork(){
         return work;
     }
 
-    private int getAge(){
+    public int getAge(){
         return age;
     }
 
