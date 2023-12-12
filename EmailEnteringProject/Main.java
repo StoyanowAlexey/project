@@ -27,13 +27,14 @@ public class Main {
             if(number == 0) break;
             numberMenu(number,emailList,passwordList,personList);
         }
+        //System.out.println(emailList);
         MyFileWriter myFileWriter = new MyFileWriter();
         myFileWriter.clearTheFile(new File("EmailEnteringProject/emailBase"));
         myFileWriter.clearTheFile(new File("EmailEnteringProject/passwordsBase"));
         myFileWriter.clearTheFile(new File("EmailEnteringProject/personalInformationBase"));
-        myFileWriter.writeToFileByOneLine(emailList,new File("EmailEnteringProject/emailBase"));
-        myFileWriter.writeToFileByOneLine(passwordList,new File("EmailEnteringProject/passwordsBase"));
-        myFileWriter.writeToFileByPersonType(personList,new File("EmailEnteringProject/personalInformationBase"));
+        myFileWriter.writeToFileByOneLine(emailList,emailList.size(),new File("EmailEnteringProject/emailBase"));
+        myFileWriter.writeToFileByOneLine(passwordList,passwordList.size(),new File("EmailEnteringProject/passwordsBase"));
+        myFileWriter.writeToFileByPersonType(personList,personList.size(),new File("EmailEnteringProject/personalInformationBase"));
     }
 
     public static void numberMenu(int number, List<String> emailList, List<String> passwordList, List<Person> personList) throws MyWrongEmailException, MyWrongLengthException {
@@ -42,7 +43,9 @@ public class Main {
                 String email = enteringEmail(emailList);
                 String password = enteringPassword();
                 Person person = enteringPersonalInformation();
+                //System.out.println("Email : " + email);
                 emailList.add(email);
+                //System.out.println("Emails:  " + emailList);
                 passwordList.add(password);
                 personList.add(person);
             }
@@ -55,6 +58,7 @@ public class Main {
                 personList.remove(personEmailId);
                 emailList.remove(personEmailId);
                 passwordList.remove(personEmailId);
+                System.out.println("---- Email was successfully deleted ----");
             }
         }
     }
@@ -82,9 +86,10 @@ public class Main {
     public static String enteringEmail(List<String> emailList) throws MyWrongEmailException {
         Scanner in = new Scanner(System.in);
         boolean f = true;
+        String newEmail = "";
         try {
             System.out.println("Enter an email");
-            String newEmail = in.nextLine();
+            newEmail = in.nextLine();
             if (emailList.contains(newEmail) || !isEmail(newEmail)) {
                 f = false;
                 throw new MyWrongEmailException();
@@ -92,7 +97,6 @@ public class Main {
         } catch (MyWrongEmailException e) {
             System.out.println(e.getMessage());
         }
-        String newEmail = "";
         if (!f) {
             do {
                 System.out.println("Please write another email ");
@@ -105,17 +109,17 @@ public class Main {
     public static String enteringPassword() throws MyWrongLengthException{
         Scanner in = new Scanner(System.in);
         boolean f = true;
+        String newPassword = null;
         try {
             System.out.println("Enter a password (size more or equal 8) ");
-            String password = in.nextLine();
-            if (password.length() < 8) {
+            newPassword = in.nextLine();
+            if (newPassword.length() < 8) {
                 f = false;
                 throw new MyWrongLengthException();
             }
         } catch (MyWrongLengthException e) {
             System.out.println(e.getMessage());
         }
-        String newPassword = null;
         if (!f) {
             do {
                 System.out.println("Enter password (SIZE MORE OR EQUAL 8) ");

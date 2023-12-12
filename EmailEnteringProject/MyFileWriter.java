@@ -8,11 +8,16 @@ import java.util.List;
 
 public class MyFileWriter {
 
-    protected void writeToFileByOneLine(List<String> list, File fileName){
+    protected void writeToFileByOneLine(List<String> list, int capacity, File fileName){
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))){
-            for (String x : list){
-                writer.write(x);
-                writer.newLine();
+            for (int i = 0; i < capacity; i++){
+                if (list.get(i) != null){
+                    //System.out.print(list.get(i));
+                    writer.write(list.get(i));
+                    //System.out.println();
+                    writer.newLine();
+                }
+
             }
         }
         catch(IOException ex){
@@ -20,17 +25,19 @@ public class MyFileWriter {
         }
     }
 
-    protected void writeToFileByPersonType(List <Person> personList, File fileName){
-        for (Person x : personList){
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))){
-                writer.write(x.getName() + " " + x.getAge() + " " + x.getWork()+ " " + x.getPhone());
-                writer.newLine();
+    protected void writeToFileByPersonType(List <Person> personList, int capacity, File fileName){
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
+                for (int i = 0; i < capacity; i++) {
+                    if (personList.get(i) != null){
+                        writer.write(personList.get(i).getName() + " " + personList.get(i).getAge() + " " + personList.get(i).getWork() + " " + personList.get(i).getPhone());
+                        writer.newLine();
+                    }
+                }
             }
             catch(IOException ex){
                 ex.printStackTrace();
             }
         }
-    }
 
     protected void clearTheFile(File file) throws IOException {
         try {
