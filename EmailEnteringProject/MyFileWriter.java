@@ -8,7 +8,7 @@ import java.util.List;
 
 public class MyFileWriter {
 
-    protected void writeToFileByOneLine(List<String> list, int capacity, File fileName){
+    protected void writeToFileLineByLine(List<String> list, int capacity, File fileName){
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))){
             for (int i = 0; i < capacity; i++){
                 if (list.get(i) != null){

@@ -2,7 +2,6 @@ package EmailEnteringProject;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
@@ -32,8 +31,8 @@ public class Main {
         myFileWriter.clearTheFile(new File("EmailEnteringProject/emailBase"));
         myFileWriter.clearTheFile(new File("EmailEnteringProject/passwordsBase"));
         myFileWriter.clearTheFile(new File("EmailEnteringProject/personalInformationBase"));
-        myFileWriter.writeToFileByOneLine(emailList,emailList.size(),new File("EmailEnteringProject/emailBase"));
-        myFileWriter.writeToFileByOneLine(passwordList,passwordList.size(),new File("EmailEnteringProject/passwordsBase"));
+        myFileWriter.writeToFileLineByLine(emailList,emailList.size(),new File("EmailEnteringProject/emailBase"));
+        myFileWriter.writeToFileLineByLine(passwordList,passwordList.size(),new File("EmailEnteringProject/passwordsBase"));
         myFileWriter.writeToFileByPersonType(personList,personList.size(),new File("EmailEnteringProject/personalInformationBase"));
     }
 
@@ -85,19 +84,19 @@ public class Main {
 
     public static String enteringEmail(List<String> emailList) throws MyWrongEmailException {
         Scanner in = new Scanner(System.in);
-        boolean f = true;
+        boolean isEmailValid = true;
         String newEmail = "";
         try {
             System.out.println("Enter an email");
             newEmail = in.nextLine();
             if (emailList.contains(newEmail) || !isEmail(newEmail)) {
-                f = false;
+                isEmailValid = false;
                 throw new MyWrongEmailException();
             }
         } catch (MyWrongEmailException e) {
             System.out.println(e.getMessage());
         }
-        if (!f) {
+        if (!isEmailValid) {
             do {
                 System.out.println("Please write another email ");
                 newEmail = in.nextLine();
@@ -122,7 +121,7 @@ public class Main {
         }
         if (!f) {
             do {
-                System.out.println("Enter password (SIZE MORE OR EQUAL 8) ");
+                System.out.println("Enter password (size more or equal 8) ");
                 newPassword = in.nextLine();
             } while (newPassword.length() <= 7);
         }
