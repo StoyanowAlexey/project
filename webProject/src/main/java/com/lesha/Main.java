@@ -54,10 +54,11 @@ public class Main {
             }
             case 3-> {
                 int personEmailId = enterTheProfile(emailList,passwordList);
+                int dataBaseId = userRepository.foundPersonByEmail(emailList.get(personEmailId));
                 personList.remove(personEmailId);
                 emailList.remove(personEmailId);
                 passwordList.remove(personEmailId);
-                userRepository.deletePersonById();
+                userRepository.deletePersonById(dataBaseId);
                 System.out.println("---- Email was successfully deleted ----");
             }
         }
