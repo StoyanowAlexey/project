@@ -3,6 +3,8 @@ package com.lesha;
 import com.lesha.repository.UserRepository;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class test {
     public static void isEmailExist(String email) throws SQLException {
@@ -19,6 +21,11 @@ public class test {
         System.out.println("id = " + id);
         String password = userRepository.getPasswordById(id);
         System.out.println("password = " + password);
-        userRepository.deletePersonById(3);
+        List<String> list = userRepository.writeInformationToStringList("email");
+        System.out.println(list);
+        List <String> passwordList = userRepository.writeInformationToStringList("password");
+        System.out.println(passwordList);
+        List<Person> personList = userRepository.writeInformationToPersonList();
+        System.out.println(personList.toString());
     }
 }

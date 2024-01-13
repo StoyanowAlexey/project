@@ -1,4 +1,4 @@
-package com.lesha;
+package com.lesha.exception;
 
 public class MyWrongEmailException extends Exception{
     public String getMessage(){

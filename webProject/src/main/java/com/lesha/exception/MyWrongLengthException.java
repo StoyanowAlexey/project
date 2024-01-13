@@ -1,4 +1,4 @@
-package com.lesha;
+package com.lesha.exception;
 
 public class MyWrongLengthException extends Throwable {
     public String getMessage(){

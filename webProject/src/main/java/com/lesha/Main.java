@@ -1,20 +1,24 @@
 package com.lesha;
 
+import com.lesha.exception.MyWrongEmailException;
+import com.lesha.exception.MyWrongEnterInformationException;
+import com.lesha.exception.MyWrongLengthException;
+import com.lesha.repository.UserRepository;
+
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 // 1) скрытый текст
 public class Main {
-    public static void main(String [] args) throws MyWrongEmailException, MyWrongLengthException, IOException {
+    public static void main(String [] args) throws MyWrongEmailException, MyWrongLengthException, IOException, SQLException {
         Scanner in = new Scanner(System.in);
-        MyFileReader emailReader = new MyFileReader(new File("EmailEnteringProject/emailBase"));
-        MyFileReader passwordReader = new MyFileReader(new File("EmailEnteringProject/passwordsBase"));
-        MyFileReader personInformationReader = new MyFileReader(new File("EmailEnteringProject/personalInformationBase"));
-        List<Person> personList = personInformationReader.readFromFilePersonType();
-        List<String> emailList = emailReader.readFromFileOneLineToList();
-        List<String> passwordList = passwordReader.readFromFileOneLineToList();
+        UserRepository userRepository = new UserRepository();
+        List<Person> personList = userRepository.writeInformationToPersonList();
+        List<String> emailList = userRepository.writeInformationToStringList("email");
+        List<String> passwordList = userRepository.writeInformationToStringList("password");
         while (true){
             System.out.println("""
                     Enter the number\s
@@ -27,16 +31,10 @@ public class Main {
             numberMenu(number,emailList,passwordList,personList);
         }
         //System.out.println(emailList);
-        MyFileWriter myFileWriter = new MyFileWriter();
-        myFileWriter.clearTheFile(new File("EmailEnteringProject/emailBase"));
-        myFileWriter.clearTheFile(new File("EmailEnteringProject/passwordsBase"));
-        myFileWriter.clearTheFile(new File("EmailEnteringProject/personalInformationBase"));
-        myFileWriter.writeToFileLineByLine(emailList,emailList.size(),new File("EmailEnteringProject/emailBase"));
-        myFileWriter.writeToFileLineByLine(passwordList,passwordList.size(),new File("EmailEnteringProject/passwordsBase"));
-        myFileWriter.writeToFileByPersonType(personList,personList.size(),new File("EmailEnteringProject/personalInformationBase"));
     }
 
-    public static void numberMenu(int number, List<String> emailList, List<String> passwordList, List<Person> personList) throws MyWrongEmailException, MyWrongLengthException {
+    public static void numberMenu(int number, List<String> emailList, List<String> passwordList, List<Person> personList) throws MyWrongEmailException, MyWrongLengthException, SQLException {
+        UserRepository userRepository = new UserRepository();
         switch (number){
             case 1 -> {
                 String email = enteringEmail(emailList);
@@ -47,6 +45,8 @@ public class Main {
                 //System.out.println("Emails:  " + emailList);
                 passwordList.add(password);
                 personList.add(person);
+                userRepository.addNewPerson(email,password,person);
+
             }
             case 2 ->{
                 int personEmailId = enterTheProfile(emailList,passwordList);
@@ -57,6 +57,7 @@ public class Main {
                 personList.remove(personEmailId);
                 emailList.remove(personEmailId);
                 passwordList.remove(personEmailId);
+                userRepository.deletePersonById();
                 System.out.println("---- Email was successfully deleted ----");
             }
         }

@@ -1,38 +1,56 @@
 package com.lesha.repository;
 
-import com.lesha.DatabaseConnection;
+import com.lesha.config.DatabaseConnection;
 import com.lesha.Person;
+import com.lesha.config.PostgresStatement;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserRepository {
-    Connection connection =  DatabaseConnection.connect();
+    PostgresStatement postgresStatement = new PostgresStatement();
 
     public UserRepository() throws SQLException {
     }
     //добавление человека в бд
     //удаление человека из бд
 
+    public void addNewPerson(String email, String password, Person person) throws SQLException {
+        String sql = "INSERT INTO  base_information(email, password, name, age, phone_number, work) VALUES ('" + email + "', '" + password + "', '" + person.getName() + "', '" + person.getAge() + "', '" + person.getPhone() + "', '" + person.getWork() + "')";
+        postgresStatement.getStatement().execute(sql);
+        //postgresStatement.getStatement().close();
+    }
 
-    public void addNewPerson(String email, String password) throws SQLException {
-        Statement statement = connection.createStatement();
-        statement.execute("SET search_path TO my_shema");
-        String sql = "INSERT INTO  base_information(email, password) VALUES ('" + email + "', '" + password + "')";
-        statement.execute(sql);
+    public List<String> writeInformationToStringList(String column_name) throws SQLException {
+        List<String> list = new ArrayList<>();
+        String sql = "SELECT * FROM base_information";
+        ResultSet result = postgresStatement.getStatement().executeQuery(sql);
+        while (result.next()){
+            list.add(result.getString(column_name));
+        }
+        return list;
+    }
+
+    public List<Person> writeInformationToPersonList() throws SQLException {
+        List <Person> list = new ArrayList<>();
+        String sql = "SELECT * FROM base_information";
+        ResultSet resultSet = postgresStatement.getStatement().executeQuery(sql);
+        while (resultSet.next()){
+            list.add(new Person(resultSet.getString("name"),resultSet.getInt("age"),resultSet.getString("phone_number"),resultSet.getString("work")));
+        }
+        return list;
     }
 
     public void deletePersonById(int id) throws SQLException {
-        Statement statement = connection.createStatement();
-        statement.execute("SET search_path TO my_shema");
         String sql = "DELETE FROM base_information WHERE id = '" + id + "'";
-        statement.execute(sql);
+        postgresStatement.getStatement().execute(sql);
+        //postgresStatement.getStatement().close();
     }
 
-    public int foundPersonByEmail(String emailPerson) throws SQLException {
-        Statement statement = connection.createStatement();
-        statement.execute("SET search_path TO my_shema");
+    public int foundPersonByEmail(String emailPerson) throws SQLException {;
         String sql = "SELECT * FROM base_information WHERE email = '" + emailPerson + "'";
-        ResultSet result = statement.executeQuery(sql);
+        ResultSet result = postgresStatement.getStatement().executeQuery(sql);
         String email,password;
         int id = 0;
         while (result.next()){
@@ -42,10 +60,8 @@ public class UserRepository {
     }
 
     public String getPasswordById(int id) throws SQLException {
-        Statement statement = connection.createStatement();
-        statement.execute("SET search_path TO my_shema");
         String sql = "SELECT * FROM base_information WHERE id = '" + id + "'";
-        ResultSet resultSet = statement.executeQuery(sql);
+        ResultSet resultSet = postgresStatement.getStatement().executeQuery(sql);
         String password = null;
         while (resultSet.next()){
             password = resultSet.getString("password");
