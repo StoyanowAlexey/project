@@ -1,9 +1,16 @@
-alter table my_shema.base_information
-    rename column column_name to id;
-alter table my_shema.base_information
-    add column_name bigserial primary key ;
-insert into base_information (email,password) values ('bestg202@gmail.com','rapunchel');
 set search_path to myShema;
 show search_path;
-create table "base_information"(email varchar, password varchar);
+create table users
+(
+    id           bigint default nextval('my_shema.base_information_id_seq'::regclass) not null
+        constraint base_information_pkey
+            primary key,
+    email        varchar,
+    password     varchar,
+    name         varchar,
+    age          integer,
+    phone_number varchar,
+    work         varchar
+);
+
 create schema "myShema"
