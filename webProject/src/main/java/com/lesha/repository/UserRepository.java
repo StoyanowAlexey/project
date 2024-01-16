@@ -17,7 +17,7 @@ public class UserRepository {
     //удаление человека из бд
 
     public void addNewPerson(String email, String password, Person person) throws SQLException {
-        String sql = "INSERT INTO  base_information(email, password, name, age, phone_number, work) VALUES ('" + email + "', '" + password + "', '" + person.getName() + "', '" + person.getAge() + "', '" + person.getPhone() + "', '" + person.getWork() + "')";
+        String sql = "INSERT INTO  users(email, password, name, age, phone_number, work) VALUES ('" + email + "', '" + password + "', '" + person.getName() + "', '" + person.getAge() + "', '" + person.getPhone() + "', '" + person.getWork() + "')";
         postgresStatement.getStatement().execute(sql);
         //postgresStatement.getStatement().close();
     }
@@ -34,7 +34,7 @@ public class UserRepository {
 
     public List<Person> writeInformationToPersonList() throws SQLException {
         List <Person> list = new ArrayList<>();
-        String sql = "SELECT * FROM base_information";
+        String sql = "SELECT * FROM users";
         ResultSet resultSet = postgresStatement.getStatement().executeQuery(sql);
         while (resultSet.next()){
             list.add(new Person(resultSet.getString("name"),resultSet.getInt("age"),resultSet.getString("phone_number"),resultSet.getString("work")));
@@ -43,13 +43,13 @@ public class UserRepository {
     }
 
     public void deletePersonById(int id) throws SQLException {
-        String sql = "DELETE FROM base_information WHERE id = '" + id + "'";
+        String sql = "DELETE FROM users WHERE id = '" + id + "'";
         postgresStatement.getStatement().execute(sql);
         //postgresStatement.getStatement().close();
     }
 
     public int foundPersonByEmail(String emailPerson) throws SQLException {;
-        String sql = "SELECT * FROM base_information WHERE email = '" + emailPerson + "'";
+        String sql = "SELECT * FROM users WHERE email = '" + emailPerson + "'";
         ResultSet result = postgresStatement.getStatement().executeQuery(sql);
         String email,password;
         int id = 0;
@@ -60,7 +60,7 @@ public class UserRepository {
     }
 
     public String getPasswordById(int id) throws SQLException {
-        String sql = "SELECT * FROM base_information WHERE id = '" + id + "'";
+        String sql = "SELECT * FROM users WHERE id = '" + id + "'";
         ResultSet resultSet = postgresStatement.getStatement().executeQuery(sql);
         String password = null;
         while (resultSet.next()){
