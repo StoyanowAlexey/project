@@ -4,6 +4,7 @@ import com.lesha.config.DatabaseConnection;
 import com.lesha.Person;
 import com.lesha.config.PostgresStatement;
 
+import javax.xml.namespace.QName;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ public class UserRepository {
 
     public List<String> writeInformationToStringList(String column_name) throws SQLException {
         List<String> list = new ArrayList<>();
-        String sql = "SELECT * FROM base_information";
+        String sql = "SELECT * FROM users";
         ResultSet result = postgresStatement.getStatement().executeQuery(sql);
         while (result.next()){
             list.add(result.getString(column_name));
@@ -48,7 +49,7 @@ public class UserRepository {
         //postgresStatement.getStatement().close();
     }
 
-    public int foundPersonByEmail(String emailPerson) throws SQLException {;
+    public int findPersonByEmail(String emailPerson) throws SQLException {;
         String sql = "SELECT * FROM users WHERE email = '" + emailPerson + "'";
         ResultSet result = postgresStatement.getStatement().executeQuery(sql);
         String email,password;
@@ -59,14 +60,24 @@ public class UserRepository {
         return id;
     }
 
-    public String getPasswordById(int id) throws SQLException {
-        String sql = "SELECT * FROM users WHERE id = '" + id + "'";
+    public void updatePersonalInformationById(Person person, int id) throws SQLException {
+        String sql = "UPDATE users SET name = '" + person.getName() + "', age = '" + person.getAge() + "', phone_number = '" + person.getPhone() + "', work = '" + person.getWork() + "' WHERE id = '" + id + "'";
+        postgresStatement.getStatement().execute(sql);
+    }
+
+    public void updateOneStringThingInProfileById(String value, String columnName, int id) throws SQLException {
+        String sql = "UPDATE users SET " + columnName + " = '" + value + "' WHERE id = " + id;
+        postgresStatement.getStatement().execute(sql);
+    }
+
+    public String getInformationAboutPersonById(int id) throws SQLException {
+        String sql = "SELECT name,age,phone_number,work FROM users WHERE id = " + id;
         ResultSet resultSet = postgresStatement.getStatement().executeQuery(sql);
-        String password = null;
+        String personal_information = "";
         while (resultSet.next()){
-            password = resultSet.getString("password");
+              personal_information = "Name - " + resultSet.getString("name") + "\n Age - " + resultSet.getString("age") + "\n Phone number - " + resultSet.getString("phone_number") + "\n Work - " + resultSet.getString("work");
         }
-        return password;
+        return personal_information;
     }
 
 }
